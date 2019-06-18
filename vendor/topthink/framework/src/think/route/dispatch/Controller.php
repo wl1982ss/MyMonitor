@@ -96,6 +96,7 @@ class Controller extends Dispatch
                 }
             } else {
                 // 操作不存在
+                var_dump($action);
                 throw new HttpException(404, 'method not exists:' . get_class($instance) . '->' . $action . '()');
             }
 

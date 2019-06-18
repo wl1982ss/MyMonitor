@@ -9,14 +9,28 @@
 namespace app\admin\controller;
 
 use app\admin\model\YouyanDevice;
+use app\admin\model\Admin;
+use app\admin\model\AuthGroupAccess;
 
+use think\App;
 use think\facade\Config;
 use think\facade\Db;
 use think\facade\Request;
+use think\facade\Session;
 use think\facade\View;
+//use think\Session;
 
 class Device extends Base
 {
+    private $admin;
+
+    public function __construct(App $app)
+    {
+        parent::__construct($app);
+        $this->admin = Session::get('admin');
+
+    }
+
     public function index()
     {
 
@@ -25,7 +39,9 @@ class Device extends Base
     public function list()
     {
         //全局查询条件
-        $where = [];
+        $where = [['adminId','=',$this->admin['id']]];
+//        var_dump($where);
+        //$where =
 
         $username = Request::param('username');
         if (!empty($username)) {
@@ -41,8 +57,11 @@ class Device extends Base
 ////            ->leftJoin('auth_group_access ac', 'a.id = ac.uid')
 ////            ->leftJoin('auth_group ag', 'ac.group_id = ag.id')
 ////            ->field('a.*, ac.group_id, ag.title')
+//            ->where('adminId', $this->admin['id'])
             ->where($where)
             ->paginate($pageSize, false, ['query' => request()->get()]);
+
+//        $list = Db::name('youyan_device')->where('adminId', $this->admin['id'])->find();
 
         $view = [
             'username' => $username,
@@ -70,7 +89,7 @@ class Device extends Base
                 $this->error('设备ID不能为空');
             }
             //验证
-//            $result = $this->validate($data, 'Admin');
+//            $result = $this->validate($data, 'AdminManage');
 //            if (true !== $result) {
 //                // 验证失败 输出错误信息
 //                $this->error($result);
@@ -79,6 +98,7 @@ class Device extends Base
             $data['deviceId']  = trim($data['deviceId']);
 //            $data['logintime'] = time();
 //            $data['loginip']   = Request::ip();
+            $data['adminId'] = $this->admin['id'];
 
             //添加
             $result = YouyanDevice::create($data);
@@ -103,8 +123,10 @@ class Device extends Base
         }
     }
 
+
     // 设备修改
     public function edit(){
+
         if (Request::isPost()) {
             $data = Request::post();
 //            $password = $data['password'];
@@ -113,8 +135,9 @@ class Device extends Base
 
 //            $group_id = $data['group_id'];
 //            unset($data['group_id']);
-//
-//            $result = $this->validate($data,'Admin');
+            $data['adminId'] = $this->admin['id'];
+
+//            $result = $this->validate($data,'AdminManage');
 //            if (true !== $result) {
 //                $this->error($result);
 //            }
@@ -132,11 +155,14 @@ class Device extends Base
             $this->success('设备修改成功!', 'device/list');
 
         } else {
+
             if (Request::param('id')) {
+
 //                $auth_group = AuthGroup::select();
                 $device = YouyanDevice::find(Request::param('id'));
-//                $admin['group_id'] = AuthGroupAccess::where('uid', $admin['id'])
-//                    ->value('group_id');
+                $admin = Admin::find(Request::param('id'));
+                $admin['group_id'] = AuthGroupAccess::where('uid', $admin['id'])
+                    ->value('group_id');
 
                 $view = [
                     'info'      => $device,

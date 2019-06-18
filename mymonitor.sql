@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主机： 127.0.0.1
--- 生成日期： 2019-06-16 15:55:12
+-- 生成日期： 2019-06-18 08:02:20
 -- 服务器版本： 10.3.15-MariaDB
 -- PHP 版本： 7.3.6
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- 数据库： `mymonitor`
 --
+CREATE DATABASE IF NOT EXISTS `mymonitor` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `mymonitor`;
 
 -- --------------------------------------------------------
 
@@ -28,8 +30,9 @@ SET time_zone = "+00:00";
 -- 表的结构 `tp_ad`
 --
 
-CREATE TABLE `tp_ad` (
-  `id` mediumint(8) NOT NULL,
+DROP TABLE IF EXISTS `tp_ad`;
+CREATE TABLE IF NOT EXISTS `tp_ad` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `type_id` mediumint(8) NOT NULL COMMENT '类型ID',
   `name` varchar(250) NOT NULL COMMENT '广告名称',
   `image` varchar(250) DEFAULT NULL COMMENT '图片',
@@ -39,8 +42,9 @@ CREATE TABLE `tp_ad` (
   `sort` mediumint(8) DEFAULT 50 COMMENT '排序',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
   `create_time` int(11) DEFAULT 0 COMMENT '添加时间',
-  `update_time` int(11) DEFAULT 0 COMMENT '修改时间'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='广告表';
+  `update_time` int(11) DEFAULT 0 COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='广告表';
 
 --
 -- 转存表中的数据 `tp_ad`
@@ -56,8 +60,9 @@ INSERT INTO `tp_ad` (`id`, `type_id`, `name`, `image`, `thumb`, `url`, `descript
 -- 表的结构 `tp_admin`
 --
 
-CREATE TABLE `tp_admin` (
-  `id` int(20) NOT NULL,
+DROP TABLE IF EXISTS `tp_admin`;
+CREATE TABLE IF NOT EXISTS `tp_admin` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
   `username` char(20) NOT NULL COMMENT '用户名',
   `password` char(32) NOT NULL COMMENT '密码',
   `logintime` int(10) DEFAULT NULL COMMENT '时间',
@@ -66,16 +71,17 @@ CREATE TABLE `tp_admin` (
   `nickname` char(100) DEFAULT NULL COMMENT '真实姓名',
   `image` varchar(200) DEFAULT NULL COMMENT '头像',
   `create_time` int(11) DEFAULT 0 COMMENT '添加时间',
-  `update_time` int(11) DEFAULT 0 COMMENT '修改时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员表';
+  `update_time` int(11) DEFAULT 0 COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 --
 -- 转存表中的数据 `tp_admin`
 --
 
 INSERT INTO `tp_admin` (`id`, `username`, `password`, `logintime`, `loginip`, `status`, `nickname`, `image`, `create_time`, `update_time`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1560688054, '127.0.0.1', 1, 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', 1553846932, 1553846932),
-(2, 'test_admin', 'e10adc3949ba59abbe56e057f20f883e', 1560687994, '127.0.0.1', 1, '某某企业设备管理员', '', 1560391105, 1560687950);
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1560835165, '127.0.0.1', 1, 'admin', '/uploads/20181228/e5885dc546eb1369482cdf29fb07decd.jpg', 1553846932, 1553846932),
+(2, 'test_admin', 'e10adc3949ba59abbe56e057f20f883e', 1560835248, '127.0.0.1', 1, '某某企业设备管理员', '', 1560391105, 1560687950);
 
 -- --------------------------------------------------------
 
@@ -83,8 +89,9 @@ INSERT INTO `tp_admin` (`id`, `username`, `password`, `logintime`, `loginip`, `s
 -- 表的结构 `tp_admin_log`
 --
 
-CREATE TABLE `tp_admin_log` (
-  `id` int(12) UNSIGNED NOT NULL COMMENT 'ID',
+DROP TABLE IF EXISTS `tp_admin_log`;
+CREATE TABLE IF NOT EXISTS `tp_admin_log` (
+  `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `admin_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '管理员ID',
   `username` varchar(30) DEFAULT '' COMMENT '管理员',
   `url` varchar(1500) DEFAULT '' COMMENT '操作页面',
@@ -92,8 +99,10 @@ CREATE TABLE `tp_admin_log` (
   `content` text DEFAULT NULL COMMENT '内容',
   `ip` varchar(50) DEFAULT '' COMMENT 'IP',
   `useragent` varchar(255) DEFAULT '' COMMENT 'User-Agent',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员日志表' ROW_FORMAT=COMPACT;
+  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作时间',
+  PRIMARY KEY (`id`),
+  KEY `name` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=741 DEFAULT CHARSET=utf8 COMMENT='管理员日志表' ROW_FORMAT=COMPACT;
 
 --
 -- 转存表中的数据 `tp_admin_log`
@@ -384,7 +393,465 @@ INSERT INTO `tp_admin_log` (`id`, `admin_id`, `username`, `url`, `title`, `conte
 (281, 1, 'admin', '/admin/auth/adminrule.html?ref=tab', '[权限管理] -> [菜单规则]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560691184),
 (282, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560691185),
 (283, 1, 'admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560691189),
-(284, 1, 'admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560691191);
+(284, 1, 'admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560691191),
+(285, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560752803),
+(286, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560752968),
+(287, 1, 'admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560752970),
+(288, 1, 'admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560752972),
+(289, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560752975),
+(290, 1, 'admin', '/admin/device/list.html?ref=tab', '[设备管理] -> [设备列表]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560753288),
+(291, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560753289),
+(292, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560753312),
+(293, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560753314),
+(294, 1, 'admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560753317),
+(295, 1, 'admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560753361),
+(296, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560753457),
+(297, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560753460),
+(298, 1, 'admin', '/admin/admin_log/index.html', '[权限管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560753463),
+(299, 1, 'admin', '/admin/system/system.html', '[系统设置] -> [系统设置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560753466),
+(300, 1, 'admin', '/admin/system/email.html', '[系统设置] -> [邮箱配置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560753469),
+(301, 1, 'admin', '/admin/system/sms.html', '[系统设置] -> [短信配置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560753472),
+(302, 1, 'admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560754261),
+(303, 1, 'admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560754455),
+(304, 1, 'admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560754456),
+(305, 1, 'admin', '/admin/monitor_data/statistic.html?ref=tab', '[监控数据] -> [数据统计]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755141),
+(306, 1, 'admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755142),
+(307, 1, 'admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755230),
+(308, 1, 'admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755489),
+(309, 1, 'admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755491),
+(310, 1, 'admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755526),
+(311, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755528),
+(312, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755531),
+(313, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755533),
+(314, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755534),
+(315, 1, 'admin', '/admin/auth/adminlist.html', '[权限管理] -> [管理员管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755537),
+(316, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755542),
+(317, 1, 'admin', '/admin/auth/adminlist.html', '[权限管理] -> [管理员管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755543),
+(318, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755544),
+(319, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755546),
+(320, 1, 'admin', '/admin/admin_log/index.html', '[权限管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755548),
+(321, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755550),
+(322, 1, 'admin', '/admin/admin_log/index.html', '[权限管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755553),
+(323, 1, 'admin', '/admin/system/system.html', '[系统设置] -> [系统设置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755558),
+(324, 1, 'admin', '/admin/system/email.html', '[系统设置] -> [邮箱配置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755562),
+(325, 1, 'admin', '/admin/system/sms.html', '[系统设置] -> [短信配置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755565),
+(326, 1, 'admin', '/admin/auth/adminlist.html', '[权限管理] -> [管理员管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755570),
+(327, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755577),
+(328, 1, 'admin', '/admin/auth/ruleedit.html?id=7', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"7\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755587),
+(329, 1, 'admin', '/admin/auth/ruleedit.html', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"7\",\"pid\":\"0\",\"title\":\"\\u7ba1\\u7406\\u5458\\u7ba1\\u7406\",\"name\":\"Auth\\/adminList\",\"icon\":\"fa fa-user\",\"status\":\"1\",\"auth_open\":\"1\",\"sort\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755600),
+(330, 1, 'admin', '/admin/auth/adminrule.html?ref=tab', '[权限管理] -> [菜单规则]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755603),
+(331, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755603),
+(332, 1, 'admin', '/admin/auth/adminadd.html', '[管理员管理] -> [操作-添加]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755607),
+(333, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755613),
+(334, 1, 'admin', '/admin/auth/adminstate.html', '[管理员管理] -> [操作-状态]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755618),
+(335, 1, 'admin', '/admin/auth/adminadd.html', '[管理员管理] -> [操作-添加]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755620),
+(336, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755624),
+(337, 1, 'admin', '/admin/auth/ruleedit.html?id=7', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"7\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755632),
+(338, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755639),
+(339, 1, 'admin', '/admin/auth/ruleadd.html?id=7', '[权限管理] -> [菜单规则] -> [操作-添加]', '{\"id\":\"7\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755646),
+(340, 1, 'admin', '/admin/auth/ruleadd.html', '[权限管理] -> [菜单规则] -> [操作-添加]', '{\"pid\":\"7\",\"title\":\"\\u7ba1\\u7406\\u5458\\u5217\\u8868\",\"name\":\"Auth\\/adminList\",\"icon\":\"fa fa-user\",\"status\":\"1\",\"auth_open\":\"1\",\"sort\":\"50\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755660),
+(341, 1, 'admin', '/admin/auth/adminrule.html?ref=tab', '[权限管理] -> [菜单规则]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755666),
+(342, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755667),
+(343, 1, 'admin', '/admin/auth/ruleadd.html?id=7', '[权限管理] -> [菜单规则] -> [操作-添加]', '{\"id\":\"7\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755681),
+(344, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755686),
+(345, 1, 'admin', '/admin/auth/ruleedit.html?id=7', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"7\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755692),
+(346, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755700),
+(347, 1, 'admin', '/admin/auth/ruleadd.html?id=7', '[权限管理] -> [菜单规则] -> [操作-添加]', '{\"id\":\"7\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755706),
+(348, 1, 'admin', '/admin/auth/ruleadd.html', '[权限管理] -> [菜单规则] -> [操作-添加]', '{\"pid\":\"7\",\"title\":\"\\u7ba1\\u7406\\u5458\\u5217\\u8868\",\"name\":\"Auth\\/adminList\",\"icon\":\"fa fa-user\",\"status\":\"1\",\"auth_open\":\"1\",\"sort\":\"5\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755730),
+(349, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755749),
+(350, 1, 'admin', '/admin/auth/ruleedit.html?id=7', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"7\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755755),
+(351, 1, 'admin', '/admin/auth/ruleedit.html', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"7\",\"pid\":\"0\",\"title\":\"\\u7ba1\\u7406\\u5458\\u7ba1\\u7406\",\"name\":\"Auth\\/index\",\"icon\":\"fa fa-user\",\"status\":\"1\",\"auth_open\":\"1\",\"sort\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755762),
+(352, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755766),
+(353, 1, 'admin', '/admin/auth/ruleadd.html?id=7', '[权限管理] -> [菜单规则] -> [操作-添加]', '{\"id\":\"7\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755770),
+(354, 1, 'admin', '/admin/auth/ruleadd.html', '[权限管理] -> [菜单规则] -> [操作-添加]', '{\"pid\":\"7\",\"title\":\"\\u7ba1\\u7406\\u5458\\u5217\\u8868\",\"name\":\"Auth\\/adminList\",\"icon\":\"fa fa-user\",\"status\":\"1\",\"auth_open\":\"1\",\"sort\":\"50\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755779),
+(355, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755782),
+(356, 1, 'admin', '/admin/auth/adminrule.html?ref=tab', '[权限管理] -> [菜单规则]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755784),
+(357, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755784),
+(358, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755787),
+(359, 1, 'admin', '/admin/auth/adminadd.html', '[管理员管理] -> [操作-添加]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755797),
+(360, 1, 'admin', '/admin/auth/adminedit.html', '[管理员管理] -> [操作-修改]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755799),
+(361, 1, 'admin', '/admin/auth/admindel.html', '[管理员管理] -> [操作-删除]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755801),
+(362, 1, 'admin', '/admin/auth/adminselectdel.html', '[管理员管理] -> [操作-批量删除]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755802),
+(363, 1, 'admin', '/admin/auth/adminstate.html', '[管理员管理] -> [操作-状态]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755803),
+(364, 1, 'admin', '/admin/auth/adminselectdel.html', '[管理员管理] -> [操作-批量删除]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755805),
+(365, 1, 'admin', '/admin/auth/adminstate.html', '[管理员管理] -> [操作-状态]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755805),
+(366, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755807),
+(367, 1, 'admin', '/admin/auth/ruleedit.html?id=10', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"10\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755818),
+(368, 1, 'admin', '/admin/auth/ruleedit.html', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"10\",\"pid\":\"7\",\"title\":\"\\u64cd\\u4f5c-\\u6dfb\\u52a0\",\"name\":\"Auth\\/adminAdd\",\"icon\":\"\",\"status\":\"0\",\"auth_open\":\"1\",\"sort\":\"211\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755820),
+(369, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755823),
+(370, 1, 'admin', '/admin/auth/ruleedit.html?id=11', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"11\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755829),
+(371, 1, 'admin', '/admin/auth/ruleedit.html', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"11\",\"pid\":\"7\",\"title\":\"\\u64cd\\u4f5c-\\u4fee\\u6539\",\"name\":\"Auth\\/adminEdit\",\"icon\":\"\",\"status\":\"0\",\"auth_open\":\"1\",\"sort\":\"212\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755832),
+(372, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755835),
+(373, 1, 'admin', '/admin/auth/rulestate.html', '[权限管理] -> [菜单规则] -> [操作-菜单状态]', '{\"id\":\"12\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755841),
+(374, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755843),
+(375, 1, 'admin', '/admin/auth/rulestate.html', '[权限管理] -> [菜单规则] -> [操作-菜单状态]', '{\"id\":\"14\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755854),
+(376, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755859),
+(377, 1, 'admin', '/admin/auth/rulestate.html', '[权限管理] -> [菜单规则] -> [操作-菜单状态]', '{\"id\":\"13\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755869),
+(378, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755876),
+(379, 1, 'admin', '/admin/auth/adminrule.html?ref=tab', '[权限管理] -> [菜单规则]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755878),
+(380, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755879),
+(381, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755882),
+(382, 1, 'admin', '/admin/auth/adminadd.html', '[管理员管理] -> [操作-添加]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755884),
+(383, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755894),
+(384, 1, 'admin', '/admin/admin_log/index.html', '[权限管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755896),
+(385, 1, 'admin', '/admin/admin_log/edit.html?id=378', '[权限管理] -> [管理员日志] -> [操作-查看]', '{\"id\":\"378\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755916),
+(386, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755924),
+(387, 1, 'admin', '/admin/auth/ruleedit.html?id=152', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"152\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755935),
+(388, 1, 'admin', '/admin/auth/ruleedit.html', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"152\",\"pid\":\"7\",\"title\":\"\\u7ba1\\u7406\\u5458\\u65e5\\u5fd7\",\"name\":\"AdminLog\\/index\",\"icon\":\" fa fa-book\",\"status\":\"1\",\"auth_open\":\"1\",\"sort\":\"24\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755940),
+(389, 1, 'admin', '/admin/auth/adminrule.html?ref=tab', '[权限管理] -> [菜单规则]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755943),
+(390, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755944),
+(391, 1, 'admin', '/admin/admin_log/index.html', '[管理员管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755949),
+(392, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755951),
+(393, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755955),
+(394, 1, 'admin', '/admin/auth/rulesort.html', '[权限管理] -> [菜单规则] -> [操作-排序]', '{\"id\":\"152\",\"sort\":\"51\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755969),
+(395, 1, 'admin', '/admin/auth/ruleedit.html?id=152', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"152\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755970),
+(396, 1, 'admin', '/admin/auth/ruleedit.html', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"152\",\"pid\":\"7\",\"title\":\"\\u7ba1\\u7406\\u5458\\u65e5\\u5fd7\",\"name\":\"AdminLog\\/index\",\"icon\":\" fa fa-book\",\"status\":\"1\",\"auth_open\":\"1\",\"sort\":\"51\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755973),
+(397, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755976),
+(398, 1, 'admin', '/admin/auth/adminrule.html?ref=tab', '[权限管理] -> [菜单规则]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755977),
+(399, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755977),
+(400, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755981),
+(401, 1, 'admin', '/admin/admin_log/index.html', '[管理员管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560755982),
+(402, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756041),
+(403, 1, 'admin', '/admin/auth/ruleedit.html?id=179', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"179\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756062),
+(404, 1, 'admin', '/admin/auth/ruleedit.html', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"179\",\"pid\":\"0\",\"title\":\"\\u76d1\\u63a7\\u6570\\u636e\",\"name\":\"MonitorData\\/index\",\"icon\":\"fa  fa-desktop\",\"status\":\"1\",\"auth_open\":\"1\",\"sort\":\"5\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756065),
+(405, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756068),
+(406, 1, 'admin', '/admin/auth/adminrule.html?ref=tab', '[权限管理] -> [菜单规则]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756146),
+(407, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756147),
+(408, 1, 'admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756151),
+(409, 1, 'admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756152),
+(410, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756155),
+(411, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756156),
+(412, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756160);
+INSERT INTO `tp_admin_log` (`id`, `admin_id`, `username`, `url`, `title`, `content`, `ip`, `useragent`, `create_time`) VALUES
+(413, 1, 'admin', '/admin/admin_log/index.html', '[管理员管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756161),
+(414, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756164),
+(415, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756166),
+(416, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756216),
+(417, 1, 'admin', '/admin/admin_log/index.html', '[管理员管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756217),
+(418, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756220),
+(419, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756222),
+(420, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756225),
+(421, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756227),
+(422, 1, 'admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756229),
+(423, 1, 'admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756229),
+(424, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756241),
+(425, 1, 'admin', '/admin/auth/groupedit.html?id=1', '[权限管理] -> [角色组管理] -> [操作-修改]', '{\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756243),
+(426, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756247),
+(427, 1, 'admin', '/admin/auth/groupaccess.html?id=1', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756249),
+(428, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756272),
+(429, 1, 'admin', '/admin/auth/admingroup.html?ref=tab', '[权限管理] -> [角色组管理]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756281),
+(430, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756282),
+(431, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756289),
+(432, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756292),
+(433, 1, 'admin', '/admin/auth/groupaccess.html?id=2', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"2\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756293),
+(434, 1, 'admin', '/admin/auth/admingroup.html?ref=tab', '[权限管理] -> [角色组管理]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756311),
+(435, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756312),
+(436, 1, 'admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756316),
+(437, 1, 'admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756317),
+(438, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756319),
+(439, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756320),
+(440, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756323),
+(441, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756324),
+(442, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756326),
+(443, 1, 'admin', '/admin/admin_log/index.html', '[管理员管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756328),
+(444, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756334),
+(445, 2, 'test_admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756343),
+(446, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756345),
+(447, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756347),
+(448, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756349),
+(449, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756351),
+(450, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756591),
+(451, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756592),
+(452, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756593),
+(453, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756594),
+(454, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756638),
+(455, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756640),
+(456, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756642),
+(457, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756643),
+(458, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756644),
+(459, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756646),
+(460, 2, 'test_admin', '/admin/monitor_data/list.html?ref=tab', '[监控数据] -> [数据列表]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756665),
+(461, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756666),
+(462, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756669),
+(463, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756670),
+(464, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756671),
+(465, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756673),
+(466, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756675),
+(467, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756676),
+(468, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756677),
+(469, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756682),
+(470, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756693),
+(471, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '{\"name\":\"\\u6d4b\\u8bd5\\u8bbe\\u5907\",\"deviceId\":\"11111111111\",\"company\":\"\\u6d4b\\u8bd51\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756695),
+(472, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560756697),
+(473, 1, 'admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822575),
+(474, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822690),
+(475, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822693),
+(476, 1, 'admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822696),
+(477, 1, 'admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822697),
+(478, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822702),
+(479, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822704),
+(480, 1, 'admin', '/admin/system/system.html', '[系统设置] -> [系统设置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822720),
+(481, 1, 'admin', '/admin/system/email.html', '[系统设置] -> [邮箱配置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822722),
+(482, 1, 'admin', '/admin/system/sms.html', '[系统设置] -> [短信配置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822724),
+(483, 1, 'admin', '/admin/system/system.html', '[系统设置] -> [系统设置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822725),
+(484, 1, 'admin', '/admin/system/systempost.html', '[系统设置] -> [系统设置] -> [操作-修改保存]', '{\"name\":\"\\u626c\\u5c18\\u5728\\u7ebf\\u76d1\\u63a7\\u5e73\\u53f0\",\"logo\":\"\\/uploads\\/20190616\\/c8cb9ef7befe1f8470999e663c7157d6.jpg\",\"file\":\"\",\"icp\":\"\\u5180ICP\\u590718030882\\u53f7-1\",\"copyright\":\"\",\"url\":\"www.hanhouai.com\",\"address\":\"\\u6cb3\\u5317\\u7701\\u90af\\u90f8\\u5e02\\u90af\\u5c71\\u533a\\u58eb\\u5a01\\u5927\\u53a61005\\u5ba4\",\"contacts\":\"\\u5b59\\u5973\\u58eb\",\"tel\":\"0310-8070726\",\"mobile_phone\":\"15100000941\",\"fax\":\"\",\"email\":\"\",\"qq\":\"\",\"qrcode\":\"\\/uploads\\/20181226\\/cb7a4c21d6443bc5e7a8d16ac2cbe242.png\",\"title\":\"\\u626c\\u5c18\\u5728\\u7ebf\\u76d1\\u6d4b\\u5e73\\u53f0\",\"key\":\"\\u626c\\u5c18\\uff0c\\u626c\\u5c18\\u5728\\u7ebf\\u76d1\\u6d4b\\uff0c\\u73af\\u4fdd\\u76d1\\u6d4b\",\"des\":\"\\u626c\\u5c18\\u5728\\u7ebf\\u76d1\\u6d4b\\u5e73\\u53f0\",\"mobile\":\"0\",\"code\":\"0\",\"message_code\":\"0\",\"message_send_mail\":\"0\",\"label_opening\":\"0\",\"template_opening\":\"0\",\"template\":\"default\",\"html\":\"html\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822921),
+(485, 1, 'admin', '/admin/system/system.html', '[系统设置] -> [系统设置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822925),
+(486, 1, 'admin', '/admin/system/email.html', '[系统设置] -> [邮箱配置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822926),
+(487, 1, 'admin', '/admin/system/sms.html', '[系统设置] -> [短信配置]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822930),
+(488, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822933),
+(489, 1, 'admin', '/admin/auth/ruleedit.html?id=1', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822936),
+(490, 1, 'admin', '/admin/auth/ruleedit.html', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"1\",\"pid\":\"0\",\"title\":\"\\u7cfb\\u7edf\\u8bbe\\u7f6e\",\"name\":\"System\",\"icon\":\"fa fa-cogs\",\"status\":\"0\",\"auth_open\":\"1\",\"sort\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822938),
+(491, 1, 'admin', '/admin/auth/adminrule.html?ref=tab', '[权限管理] -> [菜单规则]', '{\"ref\":\"tab\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822940),
+(492, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822944),
+(493, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822953),
+(494, 1, 'admin', '/admin/auth/adminadd.html', '[管理员管理] -> [操作-添加]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560822954),
+(495, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560823093),
+(496, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560823099),
+(497, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560824112),
+(498, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560824114),
+(499, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560824590),
+(500, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560824811),
+(501, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560824821),
+(502, 2, 'test_admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560824834),
+(503, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560824837),
+(504, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560824838),
+(505, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560824846),
+(506, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825421),
+(507, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825423),
+(508, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825635),
+(509, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825643),
+(510, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825674),
+(511, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825675),
+(512, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825679),
+(513, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825680),
+(514, 1, 'admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825707),
+(515, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825715),
+(516, 1, 'admin', '/admin/auth/groupaccess.html?id=2', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"2\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825717),
+(517, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825739),
+(518, 1, 'admin', '/admin/auth/ruleadd.html?id=10', '[权限管理] -> [菜单规则] -> [操作-添加]', '{\"id\":\"10\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825757),
+(519, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825760),
+(520, 1, 'admin', '/admin/auth/ruleedit.html?id=158', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"158\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825769),
+(521, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825774),
+(522, 1, 'admin', '/admin/auth/ruleadd.html?id=176', '[权限管理] -> [菜单规则] -> [操作-添加]', '{\"id\":\"176\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825779),
+(523, 1, 'admin', '/admin/auth/ruleadd.html', '[权限管理] -> [菜单规则] -> [操作-添加]', '{\"pid\":\"176\",\"title\":\"\\u4fee\\u6539\\u8bbe\\u5907\",\"name\":\"Device\\/edit\",\"icon\":\"\",\"status\":\"0\",\"auth_open\":\"1\",\"sort\":\"50\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825799),
+(524, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825802),
+(525, 1, 'admin', '/admin/auth/ruleadd.html?id=176', '[权限管理] -> [菜单规则] -> [操作-添加]', '{\"id\":\"176\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825810),
+(526, 1, 'admin', '/admin/auth/ruleadd.html', '[权限管理] -> [菜单规则] -> [操作-添加]', '{\"pid\":\"176\",\"title\":\"\\u5220\\u9664\\u8bbe\\u5907\",\"name\":\"Device\\/delete\",\"icon\":\"\",\"status\":\"0\",\"auth_open\":\"1\",\"sort\":\"50\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825823),
+(527, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825826),
+(528, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825857),
+(529, 1, 'admin', '/admin/auth/groupaccess.html?id=2', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"2\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825860),
+(530, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825874),
+(531, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825875),
+(532, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825878),
+(533, 1, 'admin', '/admin/auth/groupaccess.html?id=2', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"2\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825879),
+(534, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825883),
+(535, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825889),
+(536, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825891),
+(537, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825893),
+(538, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825901),
+(539, 1, 'admin', '/admin/device/edit.html?id=6', '[设备管理] -> [修改设备]', '{\"id\":\"6\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825904),
+(540, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825954),
+(541, 1, 'admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825956),
+(542, 1, 'admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825957),
+(543, 1, 'admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825964),
+(544, 2, 'test_admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825972),
+(545, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560825976),
+(546, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826474),
+(547, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826480),
+(548, 1, 'admin', '/admin/auth/groupaccess.html?id=1', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826481),
+(549, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826497),
+(550, 1, 'admin', '/admin/auth/groupaccess.html?id=1', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826499),
+(551, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826504),
+(552, 1, 'admin', '/admin/auth/groupaccess.html?id=2', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"2\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826505),
+(553, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826527),
+(554, 1, 'admin', '/admin/device/edit.html?id=6', '[设备管理] -> [修改设备]', '{\"id\":\"6\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826529),
+(555, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826541),
+(556, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826545),
+(557, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826546),
+(558, 1, 'admin', '/admin/auth/groupedit.html?id=1', '[权限管理] -> [角色组管理] -> [操作-修改]', '{\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826556),
+(559, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826558),
+(560, 1, 'admin', '/admin/auth/groupaccess.html?id=1', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826559),
+(561, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826568),
+(562, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826576),
+(563, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826578),
+(564, 1, 'admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826589),
+(565, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826592),
+(566, 1, 'admin', '/admin/device/edit.html?id=6', '[设备管理] -> [修改设备]', '{\"id\":\"6\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826597),
+(567, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826761),
+(568, 1, 'admin', '/admin/device/edit.html?id=6', '[设备管理] -> [修改设备]', '{\"id\":\"6\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826763),
+(569, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826801),
+(570, 1, 'admin', '/admin/device/edit.html?id=6', '[设备管理] -> [修改设备]', '{\"id\":\"6\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826802),
+(571, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826848),
+(572, 1, 'admin', '/admin/device/edit.html?id=6', '[设备管理] -> [修改设备]', '{\"id\":\"6\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826849),
+(573, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826913),
+(574, 1, 'admin', '/admin/device/edit.html?id=6', '[设备管理] -> [修改设备]', '{\"id\":\"6\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826915),
+(575, 1, 'admin', '/admin/device/edit.html', '[设备管理] -> [修改设备]', '{\"id\":\"6\",\"name\":\"\\u6d4b\\u8bd5\\u8bbe\\u5907\",\"deviceId\":\"111111111112222\",\"company\":\"\\u6d4b\\u8bd5\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826917),
+(576, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826966),
+(577, 1, 'admin', '/admin/device/edit.html?id=6', '[设备管理] -> [修改设备]', '{\"id\":\"6\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826968),
+(578, 1, 'admin', '/admin/device/edit.html', '[设备管理] -> [修改设备]', '{\"id\":\"6\",\"name\":\"\\u6d4b\\u8bd5\\u8bbe\\u5907\",\"deviceId\":\"1111111111122222\",\"company\":\"\\u6d4b\\u8bd5\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826971),
+(579, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560826991),
+(580, 2, 'test_admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827002),
+(581, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827005),
+(582, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827020),
+(583, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827022),
+(584, 1, 'admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827032),
+(585, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827035),
+(586, 1, 'admin', '/admin/device/edit.html?id=6', '[设备管理] -> [修改设备]', '{\"id\":\"6\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827038),
+(587, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827039),
+(588, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827040),
+(589, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827043),
+(590, 1, 'admin', '/admin/auth/groupaccess.html?id=1', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827045),
+(591, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827050),
+(592, 1, 'admin', '/admin/auth/groupaccess.html?id=2', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"2\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827052),
+(593, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827178),
+(594, 1, 'admin', '/admin/auth/groupaccess.html?id=2', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"2\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827180),
+(595, 2, 'test_admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827202),
+(596, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827205),
+(597, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827214),
+(598, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827275),
+(599, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827376),
+(600, 1, 'admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827475),
+(601, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827478),
+(602, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827480),
+(603, 1, 'admin', '/admin/auth/groupaccess.html?id=2', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"2\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827482),
+(604, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827491),
+(605, 1, 'admin', '/admin/auth/groupaccess.html?id=2', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"2\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827493),
+(606, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827507),
+(607, 2, 'test_admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827548),
+(608, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827551),
+(609, 2, 'test_admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827841),
+(610, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560827844),
+(611, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560828358),
+(612, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560828359),
+(613, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560828361),
+(614, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560828363),
+(615, 1, 'admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830506),
+(616, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830518),
+(617, 1, 'admin', '/admin/auth/ruleedit.html?id=183', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"183\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830525),
+(618, 1, 'admin', '/admin/auth/ruleedit.html', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"183\",\"pid\":\"176\",\"title\":\"\\u4fee\\u6539\\u8bbe\\u5907\",\"name\":\"Device\\/edit\",\"icon\":\"\",\"status\":\"1\",\"auth_open\":\"1\",\"sort\":\"50\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830527),
+(619, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830530),
+(620, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830539),
+(621, 1, 'admin', '/admin/device/edit.html', '[设备管理] -> [修改设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830541),
+(622, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830545),
+(623, 1, 'admin', '/admin/auth/ruleedit.html?id=183', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"183\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830645),
+(624, 1, 'admin', '/admin/auth/ruleedit.html', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"183\",\"pid\":\"176\",\"title\":\"\\u4fee\\u6539\\u8bbe\\u5907\",\"name\":\"Device\\/edit\",\"icon\":\"\",\"status\":\"0\",\"auth_open\":\"1\",\"sort\":\"50\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830647),
+(625, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830650),
+(626, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830654),
+(627, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830655),
+(628, 2, 'test_admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830666);
+INSERT INTO `tp_admin_log` (`id`, `admin_id`, `username`, `url`, `title`, `content`, `ip`, `useragent`, `create_time`) VALUES
+(629, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830669),
+(630, 2, 'test_admin', '/admin/device/edit.html?id=7', '[设备管理] -> [修改设备]', '{\"id\":\"7\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830671),
+(631, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830714),
+(632, 2, 'test_admin', '/admin/device/edit.html?id=7', '[设备管理] -> [修改设备]', '{\"id\":\"7\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830716),
+(633, 2, 'test_admin', '/admin/device/edit.html', '[设备管理] -> [修改设备]', '{\"id\":\"7\",\"name\":\"\\u6d4b\\u8bd5\\u8bbe\\u5907\",\"deviceId\":\"12321312112111111\",\"company\":\"\\u6d4b\\u8bd5\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830723),
+(634, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830726),
+(635, 2, 'test_admin', '/admin/device/edit.html?id=7', '[设备管理] -> [修改设备]', '{\"id\":\"7\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830741),
+(636, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560830743),
+(637, 1, 'admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831124),
+(638, 1, 'admin', '/admin/auth/adminedit.html?id=1', '[管理员管理] -> [操作-修改]', '{\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831128),
+(639, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831155),
+(640, 1, 'admin', '/admin/auth/groupaccess.html?id=2', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"2\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831157),
+(641, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831179),
+(642, 2, 'test_admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831208),
+(643, 2, 'test_admin', '/admin/auth/adminedit.html?id=2', '[管理员管理] -> [操作-修改]', '{\"id\":\"2\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831219),
+(644, 1, 'admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831238),
+(645, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831244),
+(646, 1, 'admin', '/admin/auth/groupaccess.html?id=2', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"2\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831247),
+(647, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831308),
+(648, 2, 'test_admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831318),
+(649, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831326),
+(650, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831327),
+(651, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831330),
+(652, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831331),
+(653, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831333),
+(654, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831668),
+(655, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831669),
+(656, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831670),
+(657, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831671),
+(658, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831674),
+(659, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831675),
+(660, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831982),
+(661, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831984),
+(662, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831985),
+(663, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560831986),
+(664, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832488),
+(665, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832489),
+(666, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832491),
+(667, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832492),
+(668, 1, 'admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832537),
+(669, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832541),
+(670, 1, 'admin', '/admin/auth/ruleadd.html', '[权限管理] -> [菜单规则] -> [操作-添加]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832582),
+(671, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832617),
+(672, 1, 'admin', '/admin/index/index.html', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832618),
+(673, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832628),
+(674, 1, 'admin', '/admin/auth/ruleedit.html?id=185', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"185\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832642),
+(675, 1, 'admin', '/admin/auth/ruleedit.html', '[权限管理] -> [菜单规则] -> [操作-修改]', '{\"id\":\"185\",\"pid\":\"0\",\"title\":\"\\u7cfb\\u7edf\\u9996\\u9875\",\"name\":\"Index\\/index\",\"icon\":\"fa fa-home\",\"status\":\"1\",\"auth_open\":\"1\",\"sort\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832666),
+(676, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832670),
+(677, 1, 'admin', '/admin/index/index.html', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832671),
+(678, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832680),
+(679, 1, 'admin', '/admin/index/index.html', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832786),
+(680, 1, 'admin', '/', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832873),
+(681, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832891),
+(682, 1, 'admin', '/', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832908),
+(683, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832911),
+(684, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832916),
+(685, 1, 'admin', '/', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832950),
+(686, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832953),
+(687, 1, 'admin', '/', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832993),
+(688, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832995),
+(689, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560832999),
+(690, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833004),
+(691, 1, 'admin', '/admin/admin_log/index.html', '[管理员管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833007),
+(692, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833008),
+(693, 1, 'admin', '/admin/admin_log/index.html', '[管理员管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833023),
+(694, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833029),
+(695, 1, 'admin', '/admin/admin_log/index.html', '[管理员管理] -> [管理员日志]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833031),
+(696, 1, 'admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833036),
+(697, 1, 'admin', '/admin/index/index.html', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833602),
+(698, 1, 'admin', '/', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833605),
+(699, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833609),
+(700, 1, 'admin', '/', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833610),
+(701, 1, 'admin', '/admin/index/index.html', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833619),
+(702, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833621),
+(703, 1, 'admin', '/', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560833622),
+(704, 1, 'admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560834390),
+(705, 1, 'admin', '/', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560834548),
+(706, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560834553),
+(707, 1, 'admin', '/', '[系统首页]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560834554),
+(708, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560834565),
+(709, 1, 'admin', '/admin/auth/ruledel.html', '[权限管理] -> [菜单规则] -> [操作-删除]', '{\"id\":\"185\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560834576),
+(710, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560834577),
+(711, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560834881),
+(712, 1, 'admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835019),
+(713, 2, 'test_admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835028),
+(714, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835034),
+(715, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835035),
+(716, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835037),
+(717, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835038),
+(718, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835040),
+(719, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835043),
+(720, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835044),
+(721, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835133),
+(722, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835134),
+(723, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835146),
+(724, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835148),
+(725, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835169),
+(726, 1, 'admin', '/admin/auth/adminlist.html', '[管理员管理] -> [管理员列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835186),
+(727, 1, 'admin', '/admin/auth/admingroup.html', '[权限管理] -> [角色组管理]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835188),
+(728, 1, 'admin', '/admin/auth/groupaccess.html?id=2', '[权限管理] -> [角色组管理] -> [操作-权限]', '{\"id\":\"2\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835191),
+(729, 1, 'admin', '/admin/auth/adminrule.html', '[权限管理] -> [菜单规则]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835205),
+(730, 2, 'test_admin', '/admin/login/checklogin.html', '登录成功', '', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835248),
+(731, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835762),
+(732, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835763),
+(733, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835765),
+(734, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835768),
+(735, 2, 'test_admin', '/admin/device/add.html', '[设备管理] -> [添加设备]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835771),
+(736, 2, 'test_admin', '/admin/device/list.html', '[设备管理] -> [设备列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560835772),
+(737, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560837479),
+(738, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560837481),
+(739, 2, 'test_admin', '/admin/monitor_data/list.html', '[监控数据] -> [数据列表]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560837514),
+(740, 2, 'test_admin', '/admin/monitor_data/statistic.html', '[监控数据] -> [数据统计]', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36', 1560837516);
 
 -- --------------------------------------------------------
 
@@ -392,15 +859,17 @@ INSERT INTO `tp_admin_log` (`id`, `admin_id`, `username`, `url`, `title`, `conte
 -- 表的结构 `tp_ad_type`
 --
 
-CREATE TABLE `tp_ad_type` (
-  `id` mediumint(8) NOT NULL,
+DROP TABLE IF EXISTS `tp_ad_type`;
+CREATE TABLE IF NOT EXISTS `tp_ad_type` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL COMMENT '名称',
   `description` varchar(255) DEFAULT NULL COMMENT '备注',
   `sort` mediumint(8) DEFAULT 50 COMMENT '排序',
   `status` int(1) DEFAULT 0 COMMENT '状态',
   `create_time` int(11) DEFAULT 0 COMMENT '添加时间',
-  `update_time` int(11) DEFAULT 0 COMMENT '修改时间'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='广告位表';
+  `update_time` int(11) DEFAULT 0 COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='广告位表';
 
 --
 -- 转存表中的数据 `tp_ad_type`
@@ -416,8 +885,9 @@ INSERT INTO `tp_ad_type` (`id`, `name`, `description`, `sort`, `status`, `create
 -- 表的结构 `tp_article`
 --
 
-CREATE TABLE `tp_article` (
-  `id` int(11) UNSIGNED NOT NULL COMMENT 'ID',
+DROP TABLE IF EXISTS `tp_article`;
+CREATE TABLE IF NOT EXISTS `tp_article` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `cate_id` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '栏目',
   `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
   `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
@@ -434,10 +904,14 @@ CREATE TABLE `tp_article` (
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '缩略图',
   `images` mediumtext NOT NULL COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
-  `author` varchar(50) NOT NULL DEFAULT 'Admin' COMMENT '作者',
+  `author` varchar(50) NOT NULL DEFAULT 'AdminManage' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
-  `summary` text NOT NULL COMMENT '摘要'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文章模型表';
+  `summary` text NOT NULL COMMENT '摘要',
+  PRIMARY KEY (`id`),
+  KEY `status` (`id`,`status`,`sort`),
+  KEY `cate_id` (`id`,`cate_id`,`status`),
+  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='文章模型表';
 
 --
 -- 转存表中的数据 `tp_article`
@@ -468,22 +942,24 @@ INSERT INTO `tp_article` (`id`, `cate_id`, `title`, `title_style`, `thumb`, `key
 -- 表的结构 `tp_auth_group`
 --
 
-CREATE TABLE `tp_auth_group` (
-  `id` mediumint(8) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `tp_auth_group`;
+CREATE TABLE IF NOT EXISTS `tp_auth_group` (
+  `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` char(100) NOT NULL DEFAULT '',
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `rules` text DEFAULT NULL,
   `create_time` int(11) DEFAULT 0 COMMENT '添加时间',
-  `update_time` int(11) DEFAULT 0 COMMENT '修改时间'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `update_time` int(11) DEFAULT 0 COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `tp_auth_group`
 --
 
 INSERT INTO `tp_auth_group` (`id`, `title`, `status`, `rules`, `create_time`, `update_time`) VALUES
-(1, '超级管理员', 1, '0,1,4,5,38,107,126,108,157,158,159,160,161,162,163,165,164,176,178,177,6,7,10,11,12,14,13,8,15,16,17,18,19,20,21,9,22,23,24,25,28,27,26,29,', 1537944508, 1560687911),
-(2, '各企业管理员', 1, '0,176,178,177,', 1536304526, 1560687841);
+(1, '超级管理员', 1, '1,4,5,38,107,126,108,157,158,159,160,161,162,163,165,164,7,182,152,153,154,155,156,10,11,12,14,13,176,178,177,6,8,15,16,17,18,19,20,21,9,22,23,24,25,28,27,26,29,', 1537944508, 1560826565),
+(2, '各企业管理员', 1, '176,178,177,183,184,179,180,181,', 1536304526, 1560831305);
 
 -- --------------------------------------------------------
 
@@ -491,11 +967,15 @@ INSERT INTO `tp_auth_group` (`id`, `title`, `status`, `rules`, `create_time`, `u
 -- 表的结构 `tp_auth_group_access`
 --
 
-CREATE TABLE `tp_auth_group_access` (
+DROP TABLE IF EXISTS `tp_auth_group_access`;
+CREATE TABLE IF NOT EXISTS `tp_auth_group_access` (
   `uid` mediumint(8) UNSIGNED NOT NULL,
   `group_id` mediumint(8) UNSIGNED NOT NULL,
   `create_time` int(11) DEFAULT 0 COMMENT '添加时间',
-  `update_time` int(11) DEFAULT 0 COMMENT '修改时间'
+  `update_time` int(11) DEFAULT 0 COMMENT '修改时间',
+  UNIQUE KEY `uid_group_id` (`uid`,`group_id`),
+  KEY `uid` (`uid`),
+  KEY `group_id` (`group_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -512,8 +992,9 @@ INSERT INTO `tp_auth_group_access` (`uid`, `group_id`, `create_time`, `update_ti
 -- 表的结构 `tp_auth_rule`
 --
 
-CREATE TABLE `tp_auth_rule` (
-  `id` mediumint(8) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `tp_auth_rule`;
+CREATE TABLE IF NOT EXISTS `tp_auth_rule` (
+  `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT,
   `pid` mediumint(8) NOT NULL DEFAULT 0 COMMENT '父栏目ID',
   `name` char(80) NOT NULL DEFAULT '',
   `title` char(20) NOT NULL DEFAULT '',
@@ -524,26 +1005,28 @@ CREATE TABLE `tp_auth_rule` (
   `auth_open` tinyint(2) DEFAULT 1,
   `icon` char(50) DEFAULT NULL,
   `create_time` int(11) DEFAULT 0 COMMENT '添加时间',
-  `update_time` int(11) DEFAULT 0 COMMENT '修改时间'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `update_time` int(11) DEFAULT 0 COMMENT '修改时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM AUTO_INCREMENT=186 DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `tp_auth_rule`
 --
 
 INSERT INTO `tp_auth_rule` (`id`, `pid`, `name`, `title`, `type`, `status`, `condition`, `sort`, `auth_open`, `icon`, `create_time`, `update_time`) VALUES
-(1, 0, 'System', '系统设置', 1, 1, '', 1, 1, 'fa fa-cogs', 1536819134, 1536819134),
+(1, 0, 'System', '系统设置', 1, 0, '', 1, 1, 'fa fa-cogs', 1536819134, 1536819134),
 (4, 1, 'System/system', '系统设置', 1, 1, '', 11, 1, 'fa fa-cog', 1536327129, 1547520976),
 (5, 1, 'System/email', '邮箱配置', 1, 1, '', 12, 1, 'fa  fa-mail-forward', 1536327444, 1536327838),
 (6, 0, 'Auth', '权限管理', 1, 1, '', 2, 1, 'fa fa-group', 1536327468, 1547520856),
-(7, 6, 'Auth/adminList', '管理员管理', 1, 1, '', 21, 1, 'fa fa-user', 1536327753, 1547523425),
+(7, 0, 'Auth/index', '管理员管理', 1, 1, '', 1, 1, 'fa fa-user', 1536327753, 1547523425),
 (8, 6, 'Auth/adminGroup', '角色组管理', 1, 1, '', 22, 1, 'fa fa-group', 1536327787, 1547520881),
 (9, 6, 'Auth/adminRule', '菜单规则', 1, 1, '', 23, 1, 'fa fa-bars', 1536327826, 1547520923),
-(10, 7, 'Auth/adminAdd', '操作-添加', 1, 1, '', 211, 1, '', 1536327882, 1536327952),
-(11, 7, 'Auth/adminEdit', '操作-修改', 1, 1, '', 212, 1, '', 1536327906, 1536327955),
-(12, 7, 'Auth/adminDel', '操作-删除', 1, 1, '', 213, 1, '', 1536327924, 1536327959),
-(13, 7, 'Auth/adminState', '操作-状态', 1, 1, '', 215, 1, '', 1536327944, 1536328025),
-(14, 7, 'Auth/adminSelectDel', '操作-批量删除', 1, 1, '', 214, 1, '', 1536328014, 1536328028),
+(10, 7, 'Auth/adminAdd', '操作-添加', 1, 0, '', 211, 1, '', 1536327882, 1536327952),
+(11, 7, 'Auth/adminEdit', '操作-修改', 1, 0, '', 212, 1, '', 1536327906, 1536327955),
+(12, 7, 'Auth/adminDel', '操作-删除', 1, 0, '', 213, 1, '', 1536327924, 1536327959),
+(13, 7, 'Auth/adminState', '操作-状态', 1, 0, '', 215, 1, '', 1536327944, 1536328025),
+(14, 7, 'Auth/adminSelectDel', '操作-批量删除', 1, 0, '', 214, 1, '', 1536328014, 1536328028),
 (15, 8, 'Auth/groupAdd', '操作-添加', 1, 1, '', 221, 1, '', 1536329901, 1536329910),
 (16, 8, 'Auth/groupEdit', '操作-修改', 1, 1, '', 222, 1, '', 1536329944, 1536329944),
 (17, 8, 'Auth/groupDel', ' 操作-删除', 1, 1, '', 223, 1, '', 1536329962, 1536329986),
@@ -667,7 +1150,7 @@ INSERT INTO `tp_auth_rule` (`id`, `pid`, `name`, `title`, `type`, `status`, `con
 (149, 40, 'Module/editPost', '操作-修改保存', 1, 1, '', 414, 1, '', 1553760841, 1553760855),
 (150, 45, 'Module/fieldAddPost', '操作-添加保存', 1, 1, '', 4172, 1, '', 1553761010, 1553761046),
 (151, 45, 'Module/fieldEditPost', '操作-修改保存', 1, 1, '', 4174, 1, '', 1553761029, 1553761053),
-(152, 6, 'AdminLog/index', '管理员日志', 1, 1, '', 24, 1, ' fa fa-book', 1553845141, 1553845141),
+(152, 7, 'AdminLog/index', '管理员日志', 1, 1, '', 51, 1, ' fa fa-book', 1553845141, 1553845141),
 (153, 152, 'AdminLog/del', '操作-删除', 1, 1, '', 241, 1, '', 1553845181, 1553845181),
 (154, 152, 'AdminLog/selectDel', '操作-批量删除', 1, 1, '', 242, 1, '', 1553845204, 1553845204),
 (155, 152, 'AdminLog/edit', '操作-查看', 1, 1, '', 243, 1, '', 1553848110, 1553848110),
@@ -694,9 +1177,12 @@ INSERT INTO `tp_auth_rule` (`id`, `pid`, `name`, `title`, `type`, `status`, `con
 (176, 0, 'Device/index', '设备管理', 1, 1, '', 2, 1, 'fa fa-server', 0, 0),
 (177, 176, 'Device/list', '设备列表', 1, 1, '', 50, 1, '', 0, 0),
 (178, 176, 'Device/add', '添加设备', 1, 1, '', 50, 1, '', 0, 0),
-(179, 0, 'MonitorData/index', '监控数据', 1, 1, '', 5, 1, '', 0, 0),
+(179, 0, 'MonitorData/index', '监控数据', 1, 1, '', 5, 1, 'fa  fa-desktop', 0, 0),
 (180, 179, 'MonitorData/statistic', '数据统计', 1, 1, '', 50, 1, '', 0, 0),
-(181, 179, 'MonitorData/list', '数据列表', 1, 1, '', 50, 1, '', 0, 0);
+(181, 179, 'MonitorData/list', '数据列表', 1, 1, '', 50, 1, '', 0, 0),
+(182, 7, 'Auth/adminList', '管理员列表', 1, 1, '', 50, 1, 'fa fa-user', 0, 0),
+(183, 176, 'Device/edit', '修改设备', 1, 0, '', 50, 1, '', 0, 0),
+(184, 176, 'Device/delete', '删除设备', 1, 0, '', 50, 1, '', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -704,8 +1190,9 @@ INSERT INTO `tp_auth_rule` (`id`, `pid`, `name`, `title`, `type`, `status`, `con
 -- 表的结构 `tp_cate`
 --
 
-CREATE TABLE `tp_cate` (
-  `id` mediumint(8) NOT NULL,
+DROP TABLE IF EXISTS `tp_cate`;
+CREATE TABLE IF NOT EXISTS `tp_cate` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `catname` char(100) NOT NULL COMMENT '栏目名称',
   `enname` char(100) DEFAULT NULL COMMENT '栏目英文名称',
   `catdir` char(100) DEFAULT NULL COMMENT '目录',
@@ -726,8 +1213,10 @@ CREATE TABLE `tp_cate` (
   `is_menu` int(2) NOT NULL DEFAULT 1 COMMENT '是否导航显示',
   `is_next` int(2) NOT NULL DEFAULT 0 COMMENT '是否跳转到下级栏目',
   `is_blank` int(2) DEFAULT 0 COMMENT '是否新窗口打开',
-  `status` int(1) NOT NULL DEFAULT 1 COMMENT '状态（前后台状态）'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='栏目表';
+  `status` int(1) NOT NULL DEFAULT 1 COMMENT '状态（前后台状态）',
+  PRIMARY KEY (`id`),
+  KEY `pid` (`parentid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='栏目表';
 
 --
 -- 转存表中的数据 `tp_cate`
@@ -754,13 +1243,15 @@ INSERT INTO `tp_cate` (`id`, `catname`, `enname`, `catdir`, `parentid`, `modulei
 -- 表的结构 `tp_config`
 --
 
-CREATE TABLE `tp_config` (
-  `id` smallint(6) UNSIGNED NOT NULL COMMENT '表id',
+DROP TABLE IF EXISTS `tp_config`;
+CREATE TABLE IF NOT EXISTS `tp_config` (
+  `id` smallint(6) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表id',
   `name` varchar(50) DEFAULT NULL COMMENT '配置的key键名',
   `value` varchar(512) DEFAULT NULL COMMENT '配置的val值',
   `inc_type` varchar(64) DEFAULT NULL COMMENT '配置分组',
-  `desc` varchar(50) DEFAULT NULL COMMENT '描述'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='配置表';
+  `desc` varchar(50) DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=95 DEFAULT CHARSET=utf8 COMMENT='配置表';
 
 --
 -- 转存表中的数据 `tp_config`
@@ -787,8 +1278,9 @@ INSERT INTO `tp_config` (`id`, `name`, `value`, `inc_type`, `desc`) VALUES
 -- 表的结构 `tp_debris`
 --
 
-CREATE TABLE `tp_debris` (
-  `id` mediumint(8) NOT NULL,
+DROP TABLE IF EXISTS `tp_debris`;
+CREATE TABLE IF NOT EXISTS `tp_debris` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) DEFAULT NULL COMMENT '标题',
   `name` varchar(255) DEFAULT NULL COMMENT '调用',
   `content` text DEFAULT NULL COMMENT '内容',
@@ -798,8 +1290,9 @@ CREATE TABLE `tp_debris` (
   `sort` mediumint(8) DEFAULT 50 COMMENT '排序',
   `status` int(1) DEFAULT 0 COMMENT '状态（1 正常，0 锁定）',
   `create_time` int(11) DEFAULT 0 COMMENT '添加时间',
-  `update_time` int(11) DEFAULT 0 COMMENT '修改时间'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='碎片表';
+  `update_time` int(11) DEFAULT 0 COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='碎片表';
 
 --
 -- 转存表中的数据 `tp_debris`
@@ -814,8 +1307,9 @@ INSERT INTO `tp_debris` (`id`, `title`, `name`, `content`, `url`, `image`, `desc
 -- 表的结构 `tp_download`
 --
 
-CREATE TABLE `tp_download` (
-  `id` int(11) UNSIGNED NOT NULL COMMENT 'ID',
+DROP TABLE IF EXISTS `tp_download`;
+CREATE TABLE IF NOT EXISTS `tp_download` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `cate_id` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '栏目',
   `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
   `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
@@ -832,10 +1326,14 @@ CREATE TABLE `tp_download` (
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '缩略图',
   `images` mediumtext NOT NULL COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
-  `author` varchar(50) NOT NULL DEFAULT 'Admin' COMMENT '作者',
+  `author` varchar(50) NOT NULL DEFAULT 'AdminManage' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
-  `summary` text NOT NULL COMMENT '摘要'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='下载模型表';
+  `summary` text NOT NULL COMMENT '摘要',
+  PRIMARY KEY (`id`),
+  KEY `status` (`id`,`status`,`sort`),
+  KEY `cate_id` (`id`,`cate_id`,`status`),
+  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='下载模型表';
 
 --
 -- 转存表中的数据 `tp_download`
@@ -852,8 +1350,9 @@ INSERT INTO `tp_download` (`id`, `cate_id`, `title`, `title_style`, `thumb`, `ke
 -- 表的结构 `tp_field`
 --
 
-CREATE TABLE `tp_field` (
-  `id` smallint(5) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `tp_field`;
+CREATE TABLE IF NOT EXISTS `tp_field` (
+  `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `moduleid` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `field` varchar(20) NOT NULL DEFAULT '',
   `name` varchar(30) NOT NULL DEFAULT '',
@@ -870,8 +1369,9 @@ CREATE TABLE `tp_field` (
   `unpostgroup` varchar(60) NOT NULL DEFAULT '',
   `sort` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `issystem` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='模型字段表';
+  `issystem` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=107 DEFAULT CHARSET=utf8 COMMENT='模型字段表';
 
 --
 -- 转存表中的数据 `tp_field`
@@ -980,8 +1480,9 @@ INSERT INTO `tp_field` (`id`, `moduleid`, `field`, `name`, `tips`, `required`, `
 -- 表的结构 `tp_link`
 --
 
-CREATE TABLE `tp_link` (
-  `id` mediumint(8) NOT NULL,
+DROP TABLE IF EXISTS `tp_link`;
+CREATE TABLE IF NOT EXISTS `tp_link` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT '网站名称',
   `url` varchar(255) NOT NULL COMMENT '网站地址',
   `logo` varchar(255) DEFAULT NULL COMMENT '网站logo',
@@ -989,8 +1490,9 @@ CREATE TABLE `tp_link` (
   `sort` mediumint(8) DEFAULT 50 COMMENT '排序',
   `status` int(1) DEFAULT 0 COMMENT '状态（1 正常，0 锁定）',
   `create_time` int(11) DEFAULT 0 COMMENT '添加时间',
-  `update_time` int(11) DEFAULT 0 COMMENT '修改时间'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='友情链接表';
+  `update_time` int(11) DEFAULT 0 COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='友情链接表';
 
 --
 -- 转存表中的数据 `tp_link`
@@ -1005,8 +1507,9 @@ INSERT INTO `tp_link` (`id`, `name`, `url`, `logo`, `description`, `sort`, `stat
 -- 表的结构 `tp_message`
 --
 
-CREATE TABLE `tp_message` (
-  `id` int(11) UNSIGNED NOT NULL COMMENT 'ID',
+DROP TABLE IF EXISTS `tp_message`;
+CREATE TABLE IF NOT EXISTS `tp_message` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `cate_id` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '栏目',
   `title` varchar(120) NOT NULL DEFAULT '' COMMENT '标题',
   `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
@@ -1019,7 +1522,11 @@ CREATE TABLE `tp_message` (
   `update_time` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '姓名',
   `hits` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '点击次数',
-  `contact` varchar(255) NOT NULL DEFAULT '' COMMENT '联系方式'
+  `contact` varchar(255) NOT NULL DEFAULT '' COMMENT '联系方式',
+  PRIMARY KEY (`id`),
+  KEY `status` (`id`,`status`,`sort`),
+  KEY `cate_id` (`id`,`cate_id`,`status`),
+  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='留言表';
 
 -- --------------------------------------------------------
@@ -1028,8 +1535,9 @@ CREATE TABLE `tp_message` (
 -- 表的结构 `tp_module`
 --
 
-CREATE TABLE `tp_module` (
-  `id` tinyint(3) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `tp_module`;
+CREATE TABLE IF NOT EXISTS `tp_module` (
+  `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` varchar(100) NOT NULL DEFAULT '' COMMENT '模型名称',
   `name` varchar(50) NOT NULL DEFAULT '' COMMENT '表名',
   `description` varchar(200) NOT NULL DEFAULT '' COMMENT '描述',
@@ -1037,8 +1545,9 @@ CREATE TABLE `tp_module` (
   `issystem` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `listfields` varchar(255) NOT NULL DEFAULT '' COMMENT '列表页字段',
   `sort` smallint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='模型表';
+  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='模型表';
 
 --
 -- 转存表中的数据 `tp_module`
@@ -1056,18 +1565,36 @@ INSERT INTO `tp_module` (`id`, `title`, `name`, `description`, `type`, `issystem
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `tp_monitor_data`
+--
+
+DROP TABLE IF EXISTS `tp_monitor_data`;
+CREATE TABLE IF NOT EXISTS `tp_monitor_data` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `deviceId` varchar(100) NOT NULL,
+  `data` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 0,
+  `create_time` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `tp_page`
 --
 
-CREATE TABLE `tp_page` (
-  `id` mediumint(8) NOT NULL,
+DROP TABLE IF EXISTS `tp_page`;
+CREATE TABLE IF NOT EXISTS `tp_page` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `cate_id` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '栏目',
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `keywords` varchar(255) DEFAULT '' COMMENT '关键词',
   `description` text DEFAULT NULL COMMENT 'SEO简介',
   `content` text DEFAULT NULL COMMENT '内容',
-  `hits` int(10) UNSIGNED NOT NULL DEFAULT 100 COMMENT '点击次数'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='单页模型表';
+  `hits` int(10) UNSIGNED NOT NULL DEFAULT 100 COMMENT '点击次数',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='单页模型表';
 
 --
 -- 转存表中的数据 `tp_page`
@@ -1084,8 +1611,9 @@ INSERT INTO `tp_page` (`id`, `cate_id`, `title`, `keywords`, `description`, `con
 -- 表的结构 `tp_picture`
 --
 
-CREATE TABLE `tp_picture` (
-  `id` int(11) UNSIGNED NOT NULL COMMENT 'ID',
+DROP TABLE IF EXISTS `tp_picture`;
+CREATE TABLE IF NOT EXISTS `tp_picture` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `cate_id` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '栏目',
   `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
   `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
@@ -1102,10 +1630,14 @@ CREATE TABLE `tp_picture` (
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '缩略图',
   `images` mediumtext NOT NULL COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
-  `author` varchar(50) NOT NULL DEFAULT 'Admin' COMMENT '作者',
+  `author` varchar(50) NOT NULL DEFAULT 'AdminManage' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
-  `summary` text NOT NULL COMMENT '摘要'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='图片模型表';
+  `summary` text NOT NULL COMMENT '摘要',
+  PRIMARY KEY (`id`),
+  KEY `status` (`id`,`status`,`sort`),
+  KEY `cate_id` (`id`,`cate_id`,`status`),
+  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='图片模型表';
 
 --
 -- 转存表中的数据 `tp_picture`
@@ -1125,8 +1657,9 @@ INSERT INTO `tp_picture` (`id`, `cate_id`, `title`, `title_style`, `thumb`, `key
 -- 表的结构 `tp_product`
 --
 
-CREATE TABLE `tp_product` (
-  `id` int(11) UNSIGNED NOT NULL COMMENT 'ID',
+DROP TABLE IF EXISTS `tp_product`;
+CREATE TABLE IF NOT EXISTS `tp_product` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `cate_id` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '栏目',
   `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
   `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
@@ -1143,10 +1676,14 @@ CREATE TABLE `tp_product` (
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '缩略图',
   `images` mediumtext NOT NULL COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
-  `author` varchar(50) NOT NULL DEFAULT 'Admin' COMMENT '作者',
+  `author` varchar(50) NOT NULL DEFAULT 'AdminManage' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
-  `summary` text NOT NULL COMMENT '摘要'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='产品模型表';
+  `summary` text NOT NULL COMMENT '摘要',
+  PRIMARY KEY (`id`),
+  KEY `status` (`id`,`status`,`sort`),
+  KEY `cate_id` (`id`,`cate_id`,`status`),
+  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='产品模型表';
 
 --
 -- 转存表中的数据 `tp_product`
@@ -1168,8 +1705,9 @@ INSERT INTO `tp_product` (`id`, `cate_id`, `title`, `title_style`, `thumb`, `key
 -- 表的结构 `tp_system`
 --
 
-CREATE TABLE `tp_system` (
-  `id` int(8) NOT NULL,
+DROP TABLE IF EXISTS `tp_system`;
+CREATE TABLE IF NOT EXISTS `tp_system` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
   `group_id` int(8) NOT NULL COMMENT '系统设置分组id',
   `field` varchar(255) NOT NULL COMMENT '字段名',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '别名',
@@ -1181,8 +1719,9 @@ CREATE TABLE `tp_system` (
   `status` tinyint(1) DEFAULT 0 COMMENT '状态',
   `value` text DEFAULT NULL COMMENT '字段值',
   `create_time` int(11) DEFAULT 0 COMMENT '添加时间',
-  `update_time` int(11) DEFAULT 0 COMMENT '修改时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统设置表';
+  `update_time` int(11) DEFAULT 0 COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='系统设置表';
 
 --
 -- 转存表中的数据 `tp_system`
@@ -1192,7 +1731,7 @@ INSERT INTO `tp_system` (`id`, `group_id`, `field`, `name`, `required`, `tips`, 
 (1, 1, 'name', '网站名称', 0, '', 'text', 'array (\n  \'edittype\' => \'ckeditor\',\n)', 1, 1, '扬尘在线监控平台', 1557964941, 1560687320),
 (2, 1, 'logo', ' 网站LOGO', 0, '', 'image', 'array (\n  \'upload_allowext\' => \'jpg|jpeg|gif|png\',\n)', 2, 1, '/uploads/20190616/c8cb9ef7befe1f8470999e663c7157d6.jpg', 1557968436, 1560687533),
 (3, 1, 'icp', '备案号', 0, '', 'text', NULL, 3, 1, '冀ICP备18030882号-1', 1557968883, 1560687533),
-(4, 1, 'copyright', '版权信息', 0, '', 'textarea', NULL, 4, 1, 'Copyright © SIYUCMS 2019.All right reserved.Powered by SIYUCMS', 1557968923, 1557986040),
+(4, 1, 'copyright', '版权信息', 0, '', 'textarea', NULL, 4, 1, '', 1557968923, 1560822921),
 (5, 1, 'address', '公司地址', 0, '', 'text', NULL, 6, 1, '河北省邯郸市邯山区士威大厦1005室', 1557968979, 1560687533),
 (6, 1, 'contacts', '联系人', 0, '', 'text', NULL, 7, 1, '孙女士', 1557969011, 1560687533),
 (7, 1, 'tel', '联系电话', 0, '', 'text', NULL, 8, 1, '0310-8070726', 1557969048, 1560687533),
@@ -1211,8 +1750,8 @@ INSERT INTO `tp_system` (`id`, `group_id`, `field`, `name`, `required`, `tips`, 
 (20, 4, 'template', '选择模板', 0, 'PC , MOBILE 等都会在该模板中', 'template', NULL, 41, 1, 'default', 1557969864, 1557985790),
 (21, 4, 'html', 'Html目录', 0, '用于模板文件防盗', 'text', NULL, 42, 1, 'html', 1557969903, 1557986194),
 (22, 1, 'url', '网站地址', 0, '', 'text', NULL, 5, 1, 'www.hanhouai.com', 1557986088, 1560687533),
-(23, 3, 'label_opening', '后台多标签', 0, '开启后后台启用多标签模式', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', 35, 1, '1', 1558656395, 1558656444),
-(24, 3, 'template_opening', '模板修改备份', 0, '开启后后台模板管理中修改文件时会进行自动备份', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', 36, 1, '1', 1558756191, 1558756247);
+(23, 3, 'label_opening', '后台多标签', 0, '开启后后台启用多标签模式', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', 35, 1, '0', 1558656395, 1560822921),
+(24, 3, 'template_opening', '模板修改备份', 0, '开启后后台模板管理中修改文件时会进行自动备份', 'radio', 'array (\n  \'options\' => \'开启|1\r\n关闭|0\',\n)', 36, 1, '0', 1558756191, 1560822921);
 
 -- --------------------------------------------------------
 
@@ -1220,15 +1759,17 @@ INSERT INTO `tp_system` (`id`, `group_id`, `field`, `name`, `required`, `tips`, 
 -- 表的结构 `tp_system_group`
 --
 
-CREATE TABLE `tp_system_group` (
-  `id` int(8) NOT NULL,
+DROP TABLE IF EXISTS `tp_system_group`;
+CREATE TABLE IF NOT EXISTS `tp_system_group` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL COMMENT '分组名称',
   `description` text DEFAULT NULL COMMENT '备注',
   `sort` mediumint(8) DEFAULT 50 COMMENT '排序',
   `status` int(1) DEFAULT 0 COMMENT '状态（1 正常，0 锁定）',
   `create_time` int(11) DEFAULT 0 COMMENT '添加时间',
-  `update_time` int(11) DEFAULT 0 COMMENT '修改时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统设置分组表';
+  `update_time` int(11) DEFAULT 0 COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='系统设置分组表';
 
 --
 -- 转存表中的数据 `tp_system_group`
@@ -1247,8 +1788,9 @@ INSERT INTO `tp_system_group` (`id`, `name`, `description`, `sort`, `status`, `c
 -- 表的结构 `tp_team`
 --
 
-CREATE TABLE `tp_team` (
-  `id` int(11) UNSIGNED NOT NULL COMMENT 'ID',
+DROP TABLE IF EXISTS `tp_team`;
+CREATE TABLE IF NOT EXISTS `tp_team` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `cate_id` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '栏目',
   `title` varchar(70) NOT NULL DEFAULT '' COMMENT '标题',
   `title_style` varchar(225) NOT NULL DEFAULT '' COMMENT '标题样式',
@@ -1265,10 +1807,14 @@ CREATE TABLE `tp_team` (
   `image` varchar(80) NOT NULL DEFAULT '' COMMENT '缩略图',
   `images` mediumtext NOT NULL COMMENT '图片集',
   `download` varchar(80) NOT NULL DEFAULT '' COMMENT '文件下载',
-  `author` varchar(50) NOT NULL DEFAULT 'Admin' COMMENT '作者',
+  `author` varchar(50) NOT NULL DEFAULT 'AdminManage' COMMENT '作者',
   `source` varchar(255) NOT NULL DEFAULT '' COMMENT '来源',
-  `summary` text NOT NULL COMMENT '摘要'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='团队模型表';
+  `summary` text NOT NULL COMMENT '摘要',
+  PRIMARY KEY (`id`),
+  KEY `status` (`id`,`status`,`sort`),
+  KEY `cate_id` (`id`,`cate_id`,`status`),
+  KEY `sort` (`id`,`cate_id`,`status`,`sort`)
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='团队模型表';
 
 --
 -- 转存表中的数据 `tp_team`
@@ -1286,8 +1832,9 @@ INSERT INTO `tp_team` (`id`, `cate_id`, `title`, `title_style`, `thumb`, `keywor
 -- 表的结构 `tp_users`
 --
 
-CREATE TABLE `tp_users` (
-  `id` mediumint(8) NOT NULL,
+DROP TABLE IF EXISTS `tp_users`;
+CREATE TABLE IF NOT EXISTS `tp_users` (
+  `id` mediumint(8) NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL COMMENT '邮箱帐号',
   `password` varchar(100) NOT NULL COMMENT '密码',
   `sex` tinyint(1) NOT NULL COMMENT '1男 0女',
@@ -1301,8 +1848,9 @@ CREATE TABLE `tp_users` (
   `status` tinyint(1) DEFAULT 1 COMMENT '状态',
   `create_ip` varchar(15) DEFAULT NULL COMMENT '注册IP',
   `update_time` int(10) DEFAULT 0 COMMENT '修改时间',
-  `create_time` int(10) DEFAULT 0 COMMENT '注册时间'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='会员表';
+  `create_time` int(10) DEFAULT 0 COMMENT '注册时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='会员表';
 
 --
 -- 转存表中的数据 `tp_users`
@@ -1324,15 +1872,17 @@ INSERT INTO `tp_users` (`id`, `email`, `password`, `sex`, `last_login_time`, `la
 -- 表的结构 `tp_users_type`
 --
 
-CREATE TABLE `tp_users_type` (
-  `id` smallint(4) NOT NULL,
+DROP TABLE IF EXISTS `tp_users_type`;
+CREATE TABLE IF NOT EXISTS `tp_users_type` (
+  `id` smallint(4) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL COMMENT '会员组名称',
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `sort` mediumint(8) DEFAULT 50 COMMENT '排序',
   `status` tinyint(1) DEFAULT 1 COMMENT '状态',
   `create_time` int(10) DEFAULT 0 COMMENT '添加时间',
-  `update_time` int(10) DEFAULT 0 COMMENT '修改时间'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='会员类型表';
+  `update_time` int(10) DEFAULT 0 COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='会员类型表';
 
 --
 -- 转存表中的数据 `tp_users_type`
@@ -1348,348 +1898,32 @@ INSERT INTO `tp_users_type` (`id`, `name`, `description`, `sort`, `status`, `cre
 -- 表的结构 `tp_youyan_device`
 --
 
-CREATE TABLE `tp_youyan_device` (
-  `id` int(20) NOT NULL,
+DROP TABLE IF EXISTS `tp_youyan_device`;
+CREATE TABLE IF NOT EXISTS `tp_youyan_device` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `deviceId` varchar(100) NOT NULL,
   `company` varchar(100) NOT NULL,
+  `adminId` int(11) NOT NULL,
   `create_time` date NOT NULL,
-  `status` int(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `status` int(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `tp_youyan_device`
 --
 
-INSERT INTO `tp_youyan_device` (`id`, `name`, `deviceId`, `company`, `create_time`, `status`) VALUES
-(1, '测试设备', '12321312112', '测试', '0000-00-00', 0),
-(2, '测试设备', '12321312112', '测试', '0000-00-00', 0),
-(3, '测试设备1', '12321312112', '测试', '0000-00-00', 0);
-
---
--- 转储表的索引
---
-
---
--- 表的索引 `tp_ad`
---
-ALTER TABLE `tp_ad`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_admin`
---
-ALTER TABLE `tp_admin`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_admin_log`
---
-ALTER TABLE `tp_admin_log`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `name` (`username`);
-
---
--- 表的索引 `tp_ad_type`
---
-ALTER TABLE `tp_ad_type`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_article`
---
-ALTER TABLE `tp_article`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `status` (`id`,`status`,`sort`),
-  ADD KEY `cate_id` (`id`,`cate_id`,`status`),
-  ADD KEY `sort` (`id`,`cate_id`,`status`,`sort`);
-
---
--- 表的索引 `tp_auth_group`
---
-ALTER TABLE `tp_auth_group`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_auth_group_access`
---
-ALTER TABLE `tp_auth_group_access`
-  ADD UNIQUE KEY `uid_group_id` (`uid`,`group_id`),
-  ADD KEY `uid` (`uid`),
-  ADD KEY `group_id` (`group_id`);
-
---
--- 表的索引 `tp_auth_rule`
---
-ALTER TABLE `tp_auth_rule`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- 表的索引 `tp_cate`
---
-ALTER TABLE `tp_cate`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pid` (`parentid`) USING BTREE;
-
---
--- 表的索引 `tp_config`
---
-ALTER TABLE `tp_config`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_debris`
---
-ALTER TABLE `tp_debris`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_download`
---
-ALTER TABLE `tp_download`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `status` (`id`,`status`,`sort`),
-  ADD KEY `cate_id` (`id`,`cate_id`,`status`),
-  ADD KEY `sort` (`id`,`cate_id`,`status`,`sort`);
-
---
--- 表的索引 `tp_field`
---
-ALTER TABLE `tp_field`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_link`
---
-ALTER TABLE `tp_link`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_message`
---
-ALTER TABLE `tp_message`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `status` (`id`,`status`,`sort`),
-  ADD KEY `cate_id` (`id`,`cate_id`,`status`),
-  ADD KEY `sort` (`id`,`cate_id`,`status`,`sort`);
-
---
--- 表的索引 `tp_module`
---
-ALTER TABLE `tp_module`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_page`
---
-ALTER TABLE `tp_page`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_picture`
---
-ALTER TABLE `tp_picture`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `status` (`id`,`status`,`sort`),
-  ADD KEY `cate_id` (`id`,`cate_id`,`status`),
-  ADD KEY `sort` (`id`,`cate_id`,`status`,`sort`);
-
---
--- 表的索引 `tp_product`
---
-ALTER TABLE `tp_product`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `status` (`id`,`status`,`sort`),
-  ADD KEY `cate_id` (`id`,`cate_id`,`status`),
-  ADD KEY `sort` (`id`,`cate_id`,`status`,`sort`);
-
---
--- 表的索引 `tp_system`
---
-ALTER TABLE `tp_system`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_system_group`
---
-ALTER TABLE `tp_system_group`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_team`
---
-ALTER TABLE `tp_team`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `status` (`id`,`status`,`sort`),
-  ADD KEY `cate_id` (`id`,`cate_id`,`status`),
-  ADD KEY `sort` (`id`,`cate_id`,`status`,`sort`);
-
---
--- 表的索引 `tp_users`
---
-ALTER TABLE `tp_users`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_users_type`
---
-ALTER TABLE `tp_users_type`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `tp_youyan_device`
---
-ALTER TABLE `tp_youyan_device`
-  ADD PRIMARY KEY (`id`);
-
---
--- 在导出的表使用AUTO_INCREMENT
---
-
---
--- 使用表AUTO_INCREMENT `tp_ad`
---
-ALTER TABLE `tp_ad`
-  MODIFY `id` mediumint(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- 使用表AUTO_INCREMENT `tp_admin`
---
-ALTER TABLE `tp_admin`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- 使用表AUTO_INCREMENT `tp_admin_log`
---
-ALTER TABLE `tp_admin_log`
-  MODIFY `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=285;
-
---
--- 使用表AUTO_INCREMENT `tp_ad_type`
---
-ALTER TABLE `tp_ad_type`
-  MODIFY `id` mediumint(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- 使用表AUTO_INCREMENT `tp_article`
---
-ALTER TABLE `tp_article`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=21;
-
---
--- 使用表AUTO_INCREMENT `tp_auth_group`
---
-ALTER TABLE `tp_auth_group`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- 使用表AUTO_INCREMENT `tp_auth_rule`
---
-ALTER TABLE `tp_auth_rule`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=182;
-
---
--- 使用表AUTO_INCREMENT `tp_cate`
---
-ALTER TABLE `tp_cate`
-  MODIFY `id` mediumint(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- 使用表AUTO_INCREMENT `tp_config`
---
-ALTER TABLE `tp_config`
-  MODIFY `id` smallint(6) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表id', AUTO_INCREMENT=95;
-
---
--- 使用表AUTO_INCREMENT `tp_debris`
---
-ALTER TABLE `tp_debris`
-  MODIFY `id` mediumint(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- 使用表AUTO_INCREMENT `tp_download`
---
-ALTER TABLE `tp_download`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=13;
-
---
--- 使用表AUTO_INCREMENT `tp_field`
---
-ALTER TABLE `tp_field`
-  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
-
---
--- 使用表AUTO_INCREMENT `tp_link`
---
-ALTER TABLE `tp_link`
-  MODIFY `id` mediumint(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- 使用表AUTO_INCREMENT `tp_message`
---
-ALTER TABLE `tp_message`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID';
-
---
--- 使用表AUTO_INCREMENT `tp_module`
---
-ALTER TABLE `tp_module`
-  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- 使用表AUTO_INCREMENT `tp_page`
---
-ALTER TABLE `tp_page`
-  MODIFY `id` mediumint(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- 使用表AUTO_INCREMENT `tp_picture`
---
-ALTER TABLE `tp_picture`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=16;
-
---
--- 使用表AUTO_INCREMENT `tp_product`
---
-ALTER TABLE `tp_product`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=18;
-
---
--- 使用表AUTO_INCREMENT `tp_system`
---
-ALTER TABLE `tp_system`
-  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
-
---
--- 使用表AUTO_INCREMENT `tp_system_group`
---
-ALTER TABLE `tp_system_group`
-  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- 使用表AUTO_INCREMENT `tp_team`
---
-ALTER TABLE `tp_team`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=14;
-
---
--- 使用表AUTO_INCREMENT `tp_users`
---
-ALTER TABLE `tp_users`
-  MODIFY `id` mediumint(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
---
--- 使用表AUTO_INCREMENT `tp_users_type`
---
-ALTER TABLE `tp_users_type`
-  MODIFY `id` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- 使用表AUTO_INCREMENT `tp_youyan_device`
---
-ALTER TABLE `tp_youyan_device`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+INSERT INTO `tp_youyan_device` (`id`, `name`, `deviceId`, `company`, `adminId`, `create_time`, `status`) VALUES
+(1, '测试设备', '12321312112', '测试', 0, '0000-00-00', 0),
+(2, '测试设备', '12321312112', '测试', 0, '0000-00-00', 0),
+(3, '测试设备1', '12321312112', '测试', 0, '0000-00-00', 0),
+(4, '测试设备', '11111111111', '测试1', 0, '0000-00-00', 0),
+(5, '测试设备', '11111111111', '测试1', 0, '0000-00-00', 0),
+(6, '测试设备', '1111111111122222', '测试', 1, '0000-00-00', 0),
+(7, '测试设备', '12321312112111111', '测试', 2, '0000-00-00', 0),
+(8, '测试设备', '12321312112', '测试', 2, '0000-00-00', 0),
+(9, '测试设备', '12321312112', '测试', 1, '0000-00-00', 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

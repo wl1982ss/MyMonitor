@@ -87,9 +87,19 @@
         {else}
         <!--未开启tab需要显示导航-->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="header">
-                主导航
+            <!--<li class="header">-->
+                <!--主导航-->
+            <!--</li>-->
+            <li class="header" style="font-size:16px; padding:0px;">
+                <a href="/" >
+                    <i class="fa fa-home">
+                    </i>
+                    <span>
+                        系统首页                    </span>
+
+                </a>
             </li>
+
             <!---->
             {volist name="$menus" id="vo"}
             <li class="treeview">

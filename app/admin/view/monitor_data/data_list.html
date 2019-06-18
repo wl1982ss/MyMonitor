@@ -13,7 +13,7 @@
     <div class="content-wrapper" style="margin-left: 0 !important;">
         <!--页眉-->
         <section class="content-header">
-          <h1>管理员列表</h1>
+          <h1>数据列表</h1>
         </section>
         <!--内容开始-->
         <section class="content">
@@ -24,7 +24,7 @@
                   
                  <input class="btn btn-flat btn-primary m_10" onclick="location.href='{:url('Auth/adminList')}'" type="button" value="显示全部">
                  <input class="btn btn-flat btn-warning m_10 select_del" type="button" value="批量删除">
-                 <a class="btn btn-flat btn-success m_10 f_r" href='{:url('Device/add')}'><i class="fa fa-plus m-r-10"></i>添 加</a>
+
                 </form> 
             </div>
             <!--数据表开始-->
@@ -38,9 +38,8 @@
                                     <tr>
                         	            <th class="t_c"><input type="checkbox" id="check"></th>
                                         <th class="t_c">编号</th>
-                                        <th class="t_c">设备名称</th>
                                         <th class="t_c">设备ID</th>
-                                        <th class="t_c">所属公司</th>
+                                        <th class="t_c">数据值</th>
                                         <th class="t_c">添加时间</th>
 
                                         <th class="t_c">状态</th>
@@ -50,9 +49,9 @@
                                     <tr>
                         	            <td class="t_c"><input type="checkbox" name="key[]" value="{$list.id}"></td>
                                         <td class="t_c">{$list.id}</td>
-                                        <td class="t_c">{$list.name}</td>
+
                                         <td class="t_c">{$list.deviceId}</td>
-                                        <td class="t_c">{$list.company}</td>
+                                        <td class="t_c">{$list.data}</td>
                                         <td class="t_c">{$list.create_time|date="Y-m-d H:i:s"}</td>
 
                                         <td class="t_c">
@@ -64,9 +63,7 @@
                                         </td>
                                         <td class="t_c">
 
-                                            <a class="btn btn-flat btn-info btn-xs" href="{:url('device/edit',['id'=>$list.id])}">
-                                            <i class="fa fa-edit"></i> 编辑
-                                            </a>
+
                                             <a class="btn btn-flat btn-warning btn-xs list_del" data-id="{$list.id}">
                                             <i class="fa fa-trash-o"></i> 删除
                                             </a>

@@ -4,15 +4,15 @@
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini">
             <b>
-                SIYU
+                HanHouAI
             </b>
         </span>
         <!-- logo for regular state and mobile devices -->
         <span class="logo-lg">
             <b>
-                SIYU
+                HanHouAI
             </b>
-            CMS
+            Monitor
         </span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
@@ -57,12 +57,12 @@
                         <li class="user-body">
                             <div class="pull-left">
                                 {if $labelOpening}
-                                <a onclick="addTabs({id:'600070001',title: '修改管理员',close: true,url: '{:url('auth/adminedit',['id'=>$admin.id])}',icon: 'fa fa-user'});"
+                                <a onclick="addTabs({id:'600070001',title: '修改资料',close: true,url: '{:url('profile/edit',['id'=>$admin.id])}',icon: 'fa fa-user'});"
                                 href="javascript:;" class="btn btn-default btn-flat">
                                     资料
                                 </a>
                                 {else}
-                                <a href="{:url('auth/adminedit',['id'=>$admin.id])}" target="right" class="btn btn-default btn-flat">
+                                <a href="{:url('profile/edit',['id'=>$admin.id])}" target="right" class="btn btn-default btn-flat">
                                     资料
                                 </a>
                                 {/if}
@@ -87,13 +87,13 @@
                         </i>
                     </a>
                 </li>
-                <!-- Control Sidebar Toggle Button -->
-                <li class="hidden-xs">
-                    <a href="#" data-toggle="control-sidebar" title="偏好设置">
-                        <i class="fa fa-gears">
-                        </i>
-                    </a>
-                </li>
+                <!--&lt;!&ndash; Control Sidebar Toggle Button &ndash;&gt;-->
+                <!--<li class="hidden-xs">-->
+                    <!--<a href="#" data-toggle="control-sidebar" title="偏好设置">-->
+                        <!--<i class="fa fa-gears">-->
+                        <!--</i>-->
+                    <!--</a>-->
+                <!--</li>-->
             </ul>
         </div>
     </nav>

@@ -87,7 +87,7 @@ class Auth extends Base
                 $this->error('密码不能为空');
             }
             //验证
-            $result = $this->validate($data, 'Admin');
+            $result = $this->validate($data, 'AdminManage');
             if (true !== $result) {
                 // 验证失败 输出错误信息
                 $this->error($result);
@@ -173,7 +173,7 @@ class Auth extends Base
             $group_id = $data['group_id'];
             unset($data['group_id']);
 
-            $result = $this->validate($data,'Admin');
+            $result = $this->validate($data,'AdminManage');
             if (true !== $result) {
                 $this->error($result);
             }

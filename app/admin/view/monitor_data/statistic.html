@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>后台管理面板</title>
+  <!-- 告诉浏览器该页面是自适应布局 -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  {include file="index/top" /}
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+
+
+	<div class="wrapper">
+		<div class="content-wrapper" style="margin-left: 0 !important;">
+			<!--<section class="content-header">-->
+				<!--<h1>数据统计</h1>-->
+			<!--</section>-->
+
+			<section class="content">
+				<!-- 图表容器 DOM -->
+				<div id="container" style="width: 100%; height:300px;"></div>
+			</section>
+
+			<section class="content">
+				<!-- 饼状图图表容器 DOM -->
+				<div id="pie_chart_container" style="width: 100%; height:300px;"></div>
+			</section>
+
+			<!--数据表开始-->
+			<!--<div class="row">-->
+				<!--<div class="col-xs-12">-->
+					<!--<div class="box">-->
+						<!--<div class="box-header">-->
+							<!--&lt;!&ndash; /.box-header &ndash;&gt;-->
+							<!--<div class="box-body table-responsive no-padding">-->
+								<!--<table class="table table-bordered table-hover">-->
+									<!--<tr>-->
+										<!--<th class="t_c"><input type="checkbox" id="check"></th>-->
+										<!--&lt;!&ndash;<th class="t_c">编号</th>&ndash;&gt;-->
+
+										<!--<th class="t_c">设备ID</th>-->
+										<!--<th class="t_c">数值</th>-->
+										<!--<th class="t_c">添加时间</th>-->
+
+										<!--<th class="t_c">状态</th>-->
+										<!--<th class="t_c">操作</th>-->
+									<!--</tr>-->
+									<!--{volist name='list' id='list' empty="$empty"}-->
+									<!--<tr>-->
+										<!--<td class="t_c"><input type="checkbox" name="key[]" value="{$list.id}"></td>-->
+										<!--&lt;!&ndash;<td class="t_c">{$list.id}</td>&ndash;&gt;-->
+
+										<!--<td class="t_c">{$list.deviceId}</td>-->
+										<!--<td class="t_c">{$list.data}</td>-->
+										<!--<td class="t_c">{$list.create_time|date="Y-m-d H:i:s"}</td>-->
+
+										<!--<td class="t_c">-->
+											<!--{if $list.status==1}-->
+											<!--<a class="state state_ok" data-id="{$list.id}"><i class="fa fa-fw fa-check-square"></i></a>-->
+											<!--{else}-->
+											<!--<a class="state state_no" data-id="{$list.id}"><i class="fa fa-fw fa-check-square"></i></a>-->
+											<!--{/if}-->
+										<!--</td>-->
+										<!--<td class="t_c">-->
+
+											<!--&lt;!&ndash;<a class="btn btn-flat btn-info btn-xs" href="{:url('device/edit',['id'=>$list.id])}">&ndash;&gt;-->
+												<!--&lt;!&ndash;<i class="fa fa-edit"></i> 编辑&ndash;&gt;-->
+											<!--&lt;!&ndash;</a>&ndash;&gt;-->
+											<!--<a class="btn btn-flat btn-warning btn-xs list_del" data-id="{$list.id}">-->
+												<!--<i class="fa fa-trash-o"></i> 删除-->
+											<!--</a>-->
+
+										<!--</td>-->
+									<!--</tr>-->
+									<!--{/volist}-->
+								<!--</table>-->
+							<!--</div>-->
+							<!--&lt;!&ndash; /.box-body &ndash;&gt;-->
+							<!--<div class="box-footer clearfix page">-->
+								<!--{$page|raw}-->
+								<!--&lt;!&ndash;&ndash;&gt;-->
+								<!--{$pageSize|raw}-->
+								<!--&lt;!&ndash;&ndash;&gt;-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--&lt;!&ndash; /.box &ndash;&gt;-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--数据表结束-->
+
+
+		</div>
+
+	</div>		
+	{include file="index/bottom" /} 
+
+</body>
+<!-- 引入 highcharts.js -->
+<script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
+<script>
+	// 图表配置
+	var options = {
+		title: {
+			text: '扬尘在线监测设备数据统计'
+		},
+		// subtitle: {
+		// 	text: '数据来源：thesolarfoundation.com'
+		// },
+		yAxis: {
+			title: {
+				text: '数值'
+			}
+		},
+		legend: {
+			layout: 'vertical',
+			align: 'right',
+			verticalAlign: 'middle'
+		},
+		plotOptions: {
+			series: {
+				label: {
+					connectorAllowed: false
+				},
+				pointStart: 2010
+			}
+		},
+		series: [{
+			name: '设备DX-5001-101',
+			data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+		}, {
+			name: '设备DX-5001-102',
+			data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+		}, {
+			name: '设备DX-5001-103',
+			data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+		}, {
+			name: '设备DX-5001-104',
+			data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+		}, {
+			name: '其他',
+			data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+		}],
+		responsive: {
+			rules: [{
+				condition: {
+					maxWidth: 500
+				},
+				chartOptions: {
+					legend: {
+						layout: 'horizontal',
+						align: 'center',
+						verticalAlign: 'bottom'
+					}
+				}
+			}]
+		}
+	};
+	// 图表初始化函数
+	var chart = Highcharts.chart('container', options);
+
+	//饼状图配置
+	var pie_options = {
+		chart: {
+			plotBackgroundColor: null,
+			plotBorderWidth: null,
+			plotShadow: false,
+			type: 'pie'
+		},
+		title: {
+			text: '扬尘监测告警数据分析'
+		},
+		tooltip: {
+			pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+		},
+		plotOptions: {
+			pie: {
+				allowPointSelect: true,
+				cursor: 'pointer',
+				dataLabels: {
+					enabled: true,
+					format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+					style: {
+						color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+					}
+				}
+			}
+		},
+		series: [{
+			name: 'Brands',
+			colorByPoint: true,
+			data: [{
+				name: '正常',
+				y: 61.5,
+				// sliced: true,
+				// selected: true
+			}, {
+				name: '一级告警',
+				y: 20.00
+			}, {
+				name: '二级告警',
+				y: 10.5
+			}, {
+				name: '三级告警',
+				y: 8.0
+			}]
+		}]
+	}
+
+	// 图表初始化函数
+	var pie_chart = Highcharts.chart('pie_chart_container', pie_options);
+</script>
+</html>    

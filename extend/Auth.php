@@ -94,6 +94,7 @@ class Auth
             return true;
         }
         $authList = $this->getAuthList($uid, $type);
+
         if (is_string($name)) {
             $name = strtolower($name);
             if (strpos($name, ',') !== false) {
@@ -106,6 +107,7 @@ class Auth
         if ($mode === 'url') {
             $REQUEST = unserialize(strtolower(serialize($_REQUEST)));
         }
+
         foreach ($authList as $auth) {
 
             $query = preg_replace('/^.+\?/U', '', $auth);
@@ -179,11 +181,12 @@ class Auth
         }
         $map = [
             ['id', 'in', $ids],
-            ['type', '=', $type],
-            ['status', '=', 1]
+            ['type', '=', $type]
+//            ['status', '=', 1]
         ];
         // 读取用户组所有权限规则
         $rules = Db::name($this->_config['auth_rule'])->where($map)->field('condition,name')->select();
+
         // 循环规则，判断结果。
         $authList = [];
         foreach ($rules as $rule) {
